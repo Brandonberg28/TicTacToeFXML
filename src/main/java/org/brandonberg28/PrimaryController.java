@@ -93,24 +93,41 @@ public class PrimaryController implements Initializable {
     private void setupToolTips() {
         buttonStartGame.setTooltip(new Tooltip("This is an example tooltip"));
     }
+    private void figureOutRowAndColumn(int rowIndex, int colIndex, Button clickedButton) {
+        for(int i=0; i<3; i++)
+        {
+            for(int j=0; j<3; j++)
+            {
+                if(buttonArray[i][j] == clickedButton)
+                {
+                    rowIndex = i;
+                    colIndex = j;
+                    break;
+                }
+            }
+            if(rowIndex >= 0)
+            {
+                break;
+            }
+        }
+    }
+
+    //var to hold currentPlayer, ButtonHandler() executes for current player, if button successfully marked then change currentPlayer, if currentPlayer is null dont allow button to be pressed
+    //set state first and then change the userInterface based on the state of the model
 
     @FXML
-    protected void ButtonHandler(ActionEvent e) {
+    protected void ButtonHandler(ActionEvent e) {  
 
         if(player1Turn == true)   //execute if player1s turn 
         {   
-            if(TTTLogic.placeIsNotMarked(((Button)e.getSource()).getText()))
+            int rowIndex = -1;
+            int colIndex = -1;
+            Button clickedButton = (Button)e.getSource();
+            figureOutRowAndColumn(rowIndex, colIndex, clickedButton);
+            boolean placeMarked = TTTLogic.markPosition(player1,rowIndex,colIndex);
+
+            if(placeMarked)  //if the place was successfully marked
             {
-                for(int i=0; i<3; i++)
-                {
-                    for(int j=0; j<3; j++)
-                    {
-                        if(buttonArray[i][j] == (Button)e.getSource())
-                        {
-                            TTTLogic.markPlaceOnTable(player1,i,j);
-                        }
-                    }
-                }
                 markButton(((Button)e.getSource()),player1);
                 if(TTTLogic.checkIfWinner(player1))
                 {
@@ -130,39 +147,7 @@ public class PrimaryController implements Initializable {
                 declareSpotAlreadyMarked();
             }
         }
-        else    //execute if player2s turn 
-        {
-            if(TTTLogic.placeIsNotMarked(((Button)e.getSource()).getText()))
-            {
-                for(int i=0; i<3; i++)
-                {
-                    for(int j=0; j<3; j++)
-                    {
-                        if(buttonArray[i][j] == (Button)e.getSource())
-                        {
-                            TTTLogic.markPlaceOnTable(player2,i,j);
-                        }
-                    }
-                }
-                markButton(((Button)e.getSource()),player2);
-                if(TTTLogic.checkIfWinner(player2))
-                {
-                    declareWinnerOnScoreBoard(player2);
-                    //ask if they want to play again
-                    //if yes then clear the board
-                    //then set the scoreboard to player 1 with one win
-                }
-                else
-                {
-                    updateWhosTurnItIs(player1);
-                    player1Turn = true;
-                }
-            }
-            else   //if PlaceIsAlreadyMarked
-            {
-                declareSpotAlreadyMarked();
-            }
-        }
+        
     }
 
     private void markButton(Button button, Player player){

@@ -1,5 +1,3 @@
-package org.brandonberg28;
-
 public class TicTacToeLogic 
 {
 
@@ -27,20 +25,21 @@ public class TicTacToeLogic
    {
       return table;
    }
-
-   public boolean placeIsNotMarked(String spotMark)
+   
+   public boolean markPosition(Player player, int row, int col)
    {
-      if(spotMark == "-")
+      int arrayRow = row - 1; 
+      int arrayCol = col - 1;
+      //add range checking ****
+      if(table[arrayRow][arrayCol] == "-")
       {
+         table[arrayRow][arrayCol] = player.getSymbol();
          return true;
       }
-      return false;
-   }
-   
-   public void markPlaceOnTable(Player player, int row, int col)
-   {
-      //add range checking ****
-      table[row][col] = player.getSymbol();
+      else
+      {
+         return false;
+      }
    }
    
    public boolean checkIfWinner(Player player) 
