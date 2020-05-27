@@ -45,19 +45,22 @@ public class PrimaryController implements Initializable {
     private PlayerX player1;
     private PlayerO player2;
     private TicTacToeLogic TTTLogic;
-    private boolean player1Turn = true;
+    private Player currentPlayer;
+    private int rowIndex = -1;
+    private int colIndex = -1;
 
     @FXML
     protected void startGameClicked() throws IOException {
         player1 = new PlayerX(textFieldPlayerX.getText());
         player2 = new PlayerO(textFieldPlayerO.getText());
-        TTTLogic = new TicTacToeLogic(player1, player2);
-        updateWhosTurnItIs(player1);        
+        TTTLogic = new TicTacToeLogic(/*player1, player2*/);
+        currentPlayer = player1;
+        updateWhosTurnItIs(currentPlayer);        
         updateBoard();
     }
 
     private void updateWhosTurnItIs(Player player) {
-        scoreBoard.setText(player.getName()+" its your turn.");
+        scoreBoard.setText(currentPlayer.getName()+" its your turn.");
     }
 
     private void updateBoard() {
@@ -93,7 +96,8 @@ public class PrimaryController implements Initializable {
     private void setupToolTips() {
         buttonStartGame.setTooltip(new Tooltip("This is an example tooltip"));
     }
-    private void figureOutRowAndColumn(int rowIndex, int colIndex, Button clickedButton) {
+
+    private void figureOutRowAndColumn(/*int rowIndex, int colIndex,*/ Button clickedButton) {
         for(int i=0; i<3; i++)
         {
             for(int j=0; j<3; j++)
@@ -105,10 +109,13 @@ public class PrimaryController implements Initializable {
                     break;
                 }
             }
-            if(rowIndex >= 0)
+            //THIS WAS BREAKING THE PROGRAM. WHY? HOW DID IT SKIP THE FOR/FOR/IF ABOVE IT?
+
+            /*if(rowIndex >= 0)
             {
+                System.out.println("broken");
                 break;
-            }
+            }*/
         }
     }
 
@@ -118,34 +125,36 @@ public class PrimaryController implements Initializable {
     @FXML
     protected void ButtonHandler(ActionEvent e) {  
 
-        if(player1Turn == true)   //execute if player1s turn 
-        {   
-            int rowIndex = -1;
-            int colIndex = -1;
-            Button clickedButton = (Button)e.getSource();
-            figureOutRowAndColumn(rowIndex, colIndex, clickedButton);
-            boolean placeMarked = TTTLogic.markPosition(player1,rowIndex,colIndex);
+        Button clickedButton = (Button)e.getSource();
+        figureOutRowAndColumn(/*rowIndex, colIndex,*/ clickedButton);
+        boolean placeSuccessfullyMarked = TTTLogic.markPosition(currentPlayer,rowIndex,colIndex);
 
-            if(placeMarked)  //if the place was successfully marked
+        if(placeSuccessfullyMarked)  //if the place was successfully marked
+        {
+            markButton(clickedButton,currentPlayer);
+            if(TTTLogic.checkIfWinner(currentPlayer))
             {
-                markButton(((Button)e.getSource()),player1);
-                if(TTTLogic.checkIfWinner(player1))
+                declareWinnerOnScoreBoard(currentPlayer);
+                //ask if they want to play again
+                //if yes then clear the board
+                //then set the scoreboard to player 1 with one win
+            }
+            else
+            {
+                if(currentPlayer == player1)
                 {
-                    declareWinnerOnScoreBoard(player1);
-                    //ask if they want to play again
-                    //if yes then clear the board
-                    //then set the scoreboard to player 1 with one win
+                    currentPlayer = player2;
                 }
                 else
                 {
-                    updateWhosTurnItIs(player2);
-                    player1Turn = false;
+                    currentPlayer = player1;
                 }
+                updateWhosTurnItIs(currentPlayer);
             }
-            else  //if PlaceIsAlreadyMarked
-            {
-                declareSpotAlreadyMarked();
-            }
+        }
+        else  //if PlaceIsAlreadyMarked
+        {
+            declareSpotAlreadyMarked();
         }
         
     }

@@ -1,13 +1,16 @@
+package org.brandonberg28;
+
+
 public class TicTacToeLogic 
 {
 
    private String [][] table = {{"-","-","-"},{"-","-","-"},{"-","-","-"}};
-   private Player player1, player2;   
+   //private Player player1, player2;   
    
-   public TicTacToeLogic(Player player1, Player player2)
+   public TicTacToeLogic(/*Player player1, Player player2*/)
    {
-      this.player1 = player1;
-      this.player1 = player2;
+      //this.player1 = player1;
+      //this.player1 = player2;
    }
    
    public void emptyTable()
@@ -28,12 +31,10 @@ public class TicTacToeLogic
    
    public boolean markPosition(Player player, int row, int col)
    {
-      int arrayRow = row - 1; 
-      int arrayCol = col - 1;
       //add range checking ****
-      if(table[arrayRow][arrayCol] == "-")
+      if(table[row][col] == "-")
       {
-         table[arrayRow][arrayCol] = player.getSymbol();
+         table[row][col] = player.getSymbol();
          return true;
       }
       else
