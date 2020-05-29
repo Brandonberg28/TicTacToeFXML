@@ -19,6 +19,10 @@ public abstract class Player
    public void addAWin() {
       totalWins++;
    }
+
+   public int getTotalWins() {
+      return totalWins;
+   }
    
    public abstract String getSymbol();
    
