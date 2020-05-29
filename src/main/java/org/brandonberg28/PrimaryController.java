@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.HBox;
 
 public class PrimaryController implements Initializable {
 
@@ -19,6 +20,10 @@ public class PrimaryController implements Initializable {
     private TextField textFieldPlayerX;
     @FXML
     private TextField textFieldPlayerO;
+    @FXML
+    private TextField textFieldPlayAgain;
+    @FXML 
+    private HBox hBoxPlayAgain;
     @FXML
     private Button button00; 
     @FXML
@@ -48,6 +53,7 @@ public class PrimaryController implements Initializable {
     private Player currentPlayer;
     private int rowIndex = -1;
     private int colIndex = -1;
+
 
     @FXML
     protected void startGameClicked() throws IOException {
@@ -134,8 +140,12 @@ public class PrimaryController implements Initializable {
             markButton(clickedButton,currentPlayer);
             if(TTTLogic.checkIfWinner(currentPlayer))
             {
+                currentPlayer.addAWin();  //adds one win to the player object
                 declareWinnerOnScoreBoard(currentPlayer);
+                disableAllButtons();
+                //currentPlayer = null;
                 //ask if they want to play again
+                askIfTheyWantToPlayAgain();
                 //if yes then clear the board
                 //then set the scoreboard to player 1 with one win
             }
@@ -167,9 +177,28 @@ public class PrimaryController implements Initializable {
         scoreBoard.setText(player.getName()+" you won!");
     }
 
+    private void disableAllButtons() {
+        button00.setDisable(true);
+        button01.setDisable(true);
+        button02.setDisable(true);
+        button10.setDisable(true);
+        button11.setDisable(true);
+        button12.setDisable(true);
+        button20.setDisable(true);
+        button21.setDisable(true);
+        button22.setDisable(true);
+    }
+
 
     private void declareSpotAlreadyMarked() {
         scoreBoard.setText("That spot is already marked");
+    }
+
+    private void askIfTheyWantToPlayAgain() {
+        textFieldPlayAgain.setVisible(true);
+        textFieldPlayAgain.setText("Would you like to play again?");
+        //set visible with yes/no buttons
+        hBoxPlayAgain.setVisible(true);
     }
 
     @FXML
