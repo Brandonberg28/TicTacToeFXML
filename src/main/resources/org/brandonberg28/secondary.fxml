@@ -7,6 +7,35 @@
 
 <VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.brandonberg28.SecondaryController">
     <children>
+    <GridPane>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Player X">
+               <GridPane.margin>
+                  <Insets left="20.0" />
+               </GridPane.margin>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Player O" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="20.0" />
+               </GridPane.margin>
+            </Label>
+            <TextField fx:id="textFieldPlayerX" GridPane.columnIndex="1" />
+            <TextField fx:id="textFieldPlayerO" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button fx:id="buttonStartGame" mnemonicParsing="false" onAction="#startGameClicked" text="Start Game" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+         <FlowPane.margin>
+            <Insets bottom="10.0" />
+         </FlowPane.margin>
+      </GridPane>
         <Label text="Secondary View" />
         <Button fx:id="secondaryButton" text="Switch to Primary View" onAction="#switchToPrimary" />
     </children>

@@ -8,11 +8,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 
 public class PrimaryController implements Initializable {
+
 
     @FXML
     private TextField scoreBoard;
@@ -21,9 +23,7 @@ public class PrimaryController implements Initializable {
     @FXML
     private TextField textFieldPlayerO;
     @FXML
-    private TextField textFieldPlayAgain;
-    @FXML 
-    private HBox hBoxPlayAgain;
+    private Button buttonStartGame;
     @FXML
     private Button button00; 
     @FXML
@@ -42,24 +42,31 @@ public class PrimaryController implements Initializable {
     private Button button21;
     @FXML
     private Button button22; 
-
     @FXML
-    private Button buttonStartGame;
+    private TextArea textAreaPlayAgain;
+    @FXML 
+    private HBox hBoxPlayAgain;
+    @FXML 
+    private Button buttonYes;
+    @FXML 
+    private Button buttonNo;
 
     private Button[][] buttonArray;
     private PlayerX player1;
     private PlayerO player2;
     private TicTacToeLogic TTTLogic;
     private Player currentPlayer;
-    private int rowIndex = -1;
-    private int colIndex = -1;
 
 
     @FXML
     protected void startGameClicked() throws IOException {
         player1 = new PlayerX(textFieldPlayerX.getText());
         player2 = new PlayerO(textFieldPlayerO.getText());
-        TTTLogic = new TicTacToeLogic(/*player1, player2*/);
+        TTTLogic = new TicTacToeLogic(); 
+        resetGame();
+    }
+
+    private void resetGame() {
         currentPlayer = player1;
         updateWhosTurnItIs(currentPlayer);        
         updateBoard();
@@ -100,28 +107,21 @@ public class PrimaryController implements Initializable {
 
     //change  this method to initializeButtonArray
     private void setupToolTips() {
-        buttonStartGame.setTooltip(new Tooltip("This is an example tooltip"));
+        //buttonStartGame.setTooltip(new Tooltip("This is an example tooltip"));
     }
 
-    private void figureOutRowAndColumn(/*int rowIndex, int colIndex,*/ Button clickedButton) {
+    private void figureOutRowAndColumn(ButtonPosition BP, Button clickedButton) {
         for(int i=0; i<3; i++)
         {
             for(int j=0; j<3; j++)
             {
                 if(buttonArray[i][j] == clickedButton)
                 {
-                    rowIndex = i;
-                    colIndex = j;
+                    BP.row = i;
+                    BP.col = j;
                     break;
                 }
             }
-            //THIS WAS BREAKING THE PROGRAM. WHY? HOW DID IT SKIP THE FOR/FOR/IF ABOVE IT?
-
-            /*if(rowIndex >= 0)
-            {
-                System.out.println("broken");
-                break;
-            }*/
         }
     }
 
@@ -132,22 +132,29 @@ public class PrimaryController implements Initializable {
     protected void ButtonHandler(ActionEvent e) {  
 
         Button clickedButton = (Button)e.getSource();
-        figureOutRowAndColumn(/*rowIndex, colIndex,*/ clickedButton);
-        boolean placeSuccessfullyMarked = TTTLogic.markPosition(currentPlayer,rowIndex,colIndex);
+        ButtonPosition BP = new ButtonPosition();
+        figureOutRowAndColumn(BP, clickedButton);
+        boolean placeSuccessfullyMarked = TTTLogic.markPosition(currentPlayer, BP);
 
         if(placeSuccessfullyMarked)  //if the place was successfully marked
         {
             markButton(clickedButton,currentPlayer);
+            TTTLogic.addToTurnCounter();
             if(TTTLogic.checkIfWinner(currentPlayer))
             {
                 currentPlayer.addAWin();  //adds one win to the player object
-                declareWinnerOnScoreBoard(currentPlayer);
+                declareWinnerOnScoreBoard(currentPlayer);  //the currentPlayer should not be the winner
                 disableAllButtons();
                 //currentPlayer = null;
                 //ask if they want to play again
-                askIfTheyWantToPlayAgain();
+                showPlayAgainOptions();
                 //if yes then clear the board
                 //then set the scoreboard to player 1 with one win
+            }
+            else if (TTTLogic.getTurnCounter() == 9) 
+            {
+                showPlayAgainOptions();
+                declareTieOnScoreBoard();
             }
             else
             {
@@ -177,7 +184,12 @@ public class PrimaryController implements Initializable {
         scoreBoard.setText(player.getName()+" you won!");
     }
 
+    private void declareTieOnScoreBoard() {
+        scoreBoard.setText("Game ended in a tie!");
+    }
+
     private void disableAllButtons() {
+        //for loop these
         button00.setDisable(true);
         button01.setDisable(true);
         button02.setDisable(true);
@@ -189,16 +201,42 @@ public class PrimaryController implements Initializable {
         button22.setDisable(true);
     }
 
+    private void enableAllButtons() {
+        //for loop these
+        button00.setDisable(false);
+        button01.setDisable(false);
+        button02.setDisable(false);
+        button10.setDisable(false);
+        button11.setDisable(false);
+        button12.setDisable(false);
+        button20.setDisable(false);
+        button21.setDisable(false);
+        button22.setDisable(false);
+    }
+
 
     private void declareSpotAlreadyMarked() {
         scoreBoard.setText("That spot is already marked");
     }
 
-    private void askIfTheyWantToPlayAgain() {
-        textFieldPlayAgain.setVisible(true);
-        textFieldPlayAgain.setText("Would you like to play again?");
-        //set visible with yes/no buttons
+    private void showPlayAgainOptions() {   //this doesnt 
+        textAreaPlayAgain.setVisible(true);
+        textAreaPlayAgain.setText("Would you like to play again?");
         hBoxPlayAgain.setVisible(true);
+    }
+
+    @FXML
+    private void yesButtonHandler() throws IOException {  //execute if yesButton is pressed
+        TTTLogic.emptyTable();
+        enableAllButtons();
+        resetGame();
+    }
+
+    @FXML
+    private void noButtonHandler() throws IOException {  //execute if noButton is pressed
+        Player winner = TTTLogic.checkWhoWonMostGames(player1, player2);
+        scoreBoard.setText(winner.getName()+" won with "+winner.getTotalWins()+" wins!");
+        //not currentPlayer. check to see who has more wins and then show them when NO is pressed
     }
 
     @FXML
@@ -206,5 +244,5 @@ public class PrimaryController implements Initializable {
         App.setRoot("secondary");
     }
 
-
 }
+

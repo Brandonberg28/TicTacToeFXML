@@ -5,12 +5,11 @@ public class TicTacToeLogic
 {
 
    private String [][] table = {{"-","-","-"},{"-","-","-"},{"-","-","-"}};
-   //private Player player1, player2;   
+   private int turnCounter = 0;   
    
-   public TicTacToeLogic(/*Player player1, Player player2*/)
+   public TicTacToeLogic()
    {
-      //this.player1 = player1;
-      //this.player1 = player2;
+    
    }
    
    public void emptyTable()
@@ -29,18 +28,30 @@ public class TicTacToeLogic
       return table;
    }
    
-   public boolean markPosition(Player player, int row, int col)
+   public boolean markPosition(Player player, ButtonPosition BP)
    {
       //add range checking ****
-      if(table[row][col] == "-")
+      if(table[BP.row][BP.col] == "-")
       {
-         table[row][col] = player.getSymbol();
+         table[BP.row][BP.col] = player.getSymbol();
          return true;
       }
       else
       {
          return false;
       }
+   }
+
+   public void addToTurnCounter() {
+      turnCounter++;
+   }
+
+   public int getTurnCounter() {
+      return turnCounter;
+   }
+
+   public Player checkWhoWonMostGames(Player player1, Player player2) {
+      return player1.getTotalWins() > player2.getTotalWins() ? player1 : player2;
    }
    
    public boolean checkIfWinner(Player player) 
