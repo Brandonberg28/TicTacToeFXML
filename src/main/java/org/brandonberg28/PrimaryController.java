@@ -7,12 +7,9 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 
 public class PrimaryController implements Initializable {
@@ -219,12 +216,17 @@ public class PrimaryController implements Initializable {
 
     private void showPlayAgainOptions() {
         labelPlayAgain.setVisible(true);
-        labelPlayAgain.setText("Would you like to play again?");
         hBoxPlayAgain.setVisible(true);
+    }
+
+    private void hidePlayAgainOptions() {
+        labelPlayAgain.setVisible(false);
+        hBoxPlayAgain.setVisible(false);
     }
 
     @FXML
     private void yesButtonHandler() throws IOException {  //execute if yesButton is pressed
+        hidePlayAgainOptions();
         resetGame();
     }
 
