@@ -50,6 +50,10 @@ public class TicTacToeLogic
       return turnCounter;
    }
 
+   public void clearTurnCounter() {
+      turnCounter = 0;
+   }
+
    public Player checkWhoWonMostGames(Player player1, Player player2) {
       return player1.getTotalWins() > player2.getTotalWins() ? player1 : player2;
    }
