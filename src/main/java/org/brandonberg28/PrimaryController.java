@@ -86,10 +86,6 @@ public class PrimaryController implements Initializable {
         labelWinsPlayerO.setVisible(true);
     }
 
-    private void updateWhosTurnItIs(Player player) {
-        scoreBoard.setText(currentPlayer.getName() + " its your turn.");
-    }
-
     private void updateBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -98,9 +94,12 @@ public class PrimaryController implements Initializable {
         }
     }
 
+    private void updateWhosTurnItIs(Player player) {
+        scoreBoard.setText(currentPlayer.getName() + " its your turn.");
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resources) {
-        setupToolTips();
         initializeButtons();
     }
 
@@ -117,31 +116,12 @@ public class PrimaryController implements Initializable {
         buttonArray[2][2] = button22;
     }
 
-    // change this method to initializeButtonArray
-    private void setupToolTips() {
-        // buttonStartGame.setTooltip(new Tooltip("This is an example tooltip"));
-    }
-
-    private void figureOutRowAndColumn(ButtonPosition BP, Button clickedButton) {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (buttonArray[i][j] == clickedButton) {
-                    BP.row = i;
-                    BP.col = j;
-                    break;
-                }
-            }
-        }
-    }
-
-    // set state first and then change the userInterface based on the state of the
-    // model
-
     @FXML
-    protected void ButtonHandler(ActionEvent e) {
+    protected void ButtonHandler(ActionEvent e) {   // set state first and then change the userInterface based on the state of the model
 
         Button clickedButton = (Button) e.getSource();
         ButtonPosition BP = new ButtonPosition();
+
         figureOutRowAndColumn(BP, clickedButton);
         boolean placeSuccessfullyMarked = TTTLogic.markPosition(currentPlayer, BP);
 
@@ -175,11 +155,23 @@ public class PrimaryController implements Initializable {
                 updateWhosTurnItIs(currentPlayer);
             }
         } 
-        else // if PlaceIsAlreadyMarked
+        else // if place NOT SuccessfullyMarked
         {
             declareSpotAlreadyMarked();
         }
 
+    }
+
+    private void figureOutRowAndColumn(ButtonPosition BP, Button clickedButton) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (buttonArray[i][j] == clickedButton) {
+                    BP.row = i;
+                    BP.col = j;
+                    break;
+                }
+            }
+        }
     }
 
     private void markButton(Button button, Player player) {
@@ -225,13 +217,14 @@ public class PrimaryController implements Initializable {
     }
 
     @FXML
-    private void yesButtonHandler() throws IOException {  //execute if yesButton is pressed
+    private void yesButtonHandler() throws IOException {  
         hidePlayAgainOptions();
         resetGame();
     }
 
     @FXML
-    private void noButtonHandler() throws IOException {  //execute if noButton is pressed
+    private void noButtonHandler() throws IOException { 
+        hidePlayAgainOptions();
         disableAllButtons();
         showAndUpdatePlayerScores();    
         if(player1.getTotalWins() == player2.getTotalWins())

@@ -30,7 +30,6 @@ public class TicTacToeLogic
    
    public boolean markPosition(Player player, ButtonPosition BP)
    {
-      //add range checking ****
       if(table[BP.row][BP.col] == "-")
       {
          table[BP.row][BP.col] = player.getSymbol();
@@ -61,7 +60,7 @@ public class TicTacToeLogic
    public boolean checkIfWinner(Player player) 
    {
       int InARow = 0, InACol = 0;
-      //check for Xs
+      
       for(int i=0; i<3; i++)  
       {
          for(int j=0; j<3; j++)  
