@@ -58,6 +58,7 @@ public class PrimaryController implements Initializable {
     private PlayerO player2;
     private TicTacToeLogic TTTLogic;
     private Player currentPlayer;
+    ButtonPosition BP = new ButtonPosition();
 
     @FXML
     protected void startGameClicked() throws IOException {
@@ -120,7 +121,6 @@ public class PrimaryController implements Initializable {
     protected void ButtonHandler(ActionEvent e) {   // set state first and then change the userInterface based on the state of the model
 
         Button clickedButton = (Button) e.getSource();
-        ButtonPosition BP = new ButtonPosition();
 
         figureOutRowAndColumn(BP, clickedButton);
         boolean placeSuccessfullyMarked = TTTLogic.markPosition(currentPlayer, BP);
@@ -157,7 +157,7 @@ public class PrimaryController implements Initializable {
         } 
         else // if place NOT SuccessfullyMarked
         {
-            declareSpotAlreadyMarked();
+            scoreBoard.setText("That spot is already marked");
         }
 
     }
@@ -166,8 +166,8 @@ public class PrimaryController implements Initializable {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (buttonArray[i][j] == clickedButton) {
-                    BP.row = i;
-                    BP.col = j;
+                    BP.setRow(i);
+                    BP.setCol(j);
                     break;
                 }
             }
@@ -202,10 +202,6 @@ public class PrimaryController implements Initializable {
         }
     }
 
-    private void declareSpotAlreadyMarked() {
-        scoreBoard.setText("That spot is already marked");
-    }
-
     private void showPlayAgainOptions() {
         labelPlayAgain.setVisible(true);
         hBoxPlayAgain.setVisible(true);
@@ -234,13 +230,17 @@ public class PrimaryController implements Initializable {
         else
         {
             Player winner = TTTLogic.checkWhoWonMostGames(player1, player2);
-            scoreBoard.setText(winner.getName()+" won with "+winner.getTotalWins()+" wins!");
+            int totalWins = winner.getTotalWins();
+            if(totalWins == 1) 
+            {
+                scoreBoard.setText(winner.getName()+" won with "+totalWins+" win!");
+            }
+            else 
+            {
+                scoreBoard.setText(winner.getName()+" won with "+totalWins+" wins!");
+            }
+            
         }
-    }
-
-    @FXML
-    private void switchToSecondary() throws IOException {
-        App.setRoot("secondary");
     }
 
 }

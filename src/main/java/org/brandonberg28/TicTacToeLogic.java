@@ -14,9 +14,9 @@ public class TicTacToeLogic
    
    public void emptyTable()
    {
-      for (int i=0; i<3; i++)//loop for rows
+      for (int i=0; i<3; i++)
       {
-         for (int j=0; j<3; j++)//loop for collumns
+         for (int j=0; j<3; j++)
          {
             table[i][j] = "-";
          }
@@ -30,9 +30,9 @@ public class TicTacToeLogic
    
    public boolean markPosition(Player player, ButtonPosition BP)
    {
-      if(table[BP.row][BP.col] == "-")
+      if(table[BP.getRow()][BP.getCol()] == "-")
       {
-         table[BP.row][BP.col] = player.getSymbol();
+         table[BP.getRow()][BP.getCol()] = player.getSymbol();
          return true;
       }
       else
