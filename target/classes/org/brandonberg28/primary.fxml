@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-
 
 <FlowPane alignment="TOP_CENTER" orientation="VERTICAL" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.brandonberg28.PrimaryController">
    <children>
@@ -24,19 +24,29 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" text="Player X">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="54.0" text="Player X">
                <GridPane.margin>
                   <Insets left="20.0" />
                </GridPane.margin>
             </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" text="Player O" GridPane.rowIndex="1">
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Player O" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets left="20.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="textFieldPlayerX" GridPane.columnIndex="1" />
+            <TextField fx:id="textFieldPlayerX" GridPane.rowIndex="1" />
             <TextField fx:id="textFieldPlayerO" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Button fx:id="buttonStartGame" mnemonicParsing="false" onAction="#startGameClicked" text="Start Game" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="labelWinsPlayerX" visible="false" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="62.0" text="Wins: " textAlignment="RIGHT" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="20.0" />
+               </GridPane.margin>
+            </Label>
+            <Label fx:id="labelWinsPlayerO" visible="false" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="50.0" text="Wins: " GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="20.0" />
+               </GridPane.margin>
+            </Label>
          </children>
          <FlowPane.margin>
             <Insets bottom="10.0" />
@@ -49,22 +59,36 @@
       </TextField>
       <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Button fx:id="button00"  onAction="#ButtonHandler" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="Button" />
-            <Button fx:id="button01"  onAction="#ButtonHandler" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="Button" />
-            <Button fx:id="button02"  onAction="#ButtonHandler" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="Button" />
-            <Button fx:id="button10"  onAction="#ButtonHandler" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="Button" />
-            <Button fx:id="button11"  onAction="#ButtonHandler" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="Button" />
-            <Button fx:id="button12"  onAction="#ButtonHandler" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="Button" />
-            <Button fx:id="button20"  onAction="#ButtonHandler" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="Button" />
-            <Button fx:id="button21"  onAction="#ButtonHandler" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="Button" />
-            <Button fx:id="button22"  onAction="#ButtonHandler" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="Button" />
+            <Button fx:id="button00" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ButtonHandler" prefHeight="60.0" prefWidth="60.0" text="Button" />
+            <Button fx:id="button01" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ButtonHandler" prefHeight="60.0" prefWidth="60.0" text="Button" />
+            <Button fx:id="button02" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ButtonHandler" prefHeight="60.0" prefWidth="60.0" text="Button" />
+            <Button fx:id="button10" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ButtonHandler" prefHeight="60.0" prefWidth="60.0" text="Button" />
+            <Button fx:id="button11" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ButtonHandler" prefHeight="60.0" prefWidth="60.0" text="Button" />
+            <Button fx:id="button12" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ButtonHandler" prefHeight="60.0" prefWidth="60.0" text="Button" />
+            <Button fx:id="button20" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ButtonHandler" prefHeight="60.0" prefWidth="60.0" text="Button" />
+            <Button fx:id="button21" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ButtonHandler" prefHeight="60.0" prefWidth="60.0" text="Button" />
+            <Button fx:id="button22" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#ButtonHandler" prefHeight="60.0" prefWidth="60.0" text="Button" />
          </children>
       </FlowPane>
-      <VBox alignment="CENTER" spacing="20.0">
+      <Label fx:id="labelPlayAgain" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="192.0" text="Would you like to play again?" visible="false" />
+      <HBox fx:id="hBoxPlayAgain" alignment="TOP_CENTER" prefHeight="37.0" prefWidth="218.0" visible="false">
          <children>
-            <Label text="Primary View" />
-            <Button fx:id="primaryButton" onAction="#switchToSecondary" text="Switch to Secondary View" />
+            <Button fx:id="buttonYes" contentDisplay="CENTER" mnemonicParsing="false" onAction="#yesButtonHandler" text="Yes">
+               <HBox.margin>
+                  <Insets right="15.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="buttonNo" mnemonicParsing="false" onAction="#noButtonHandler" text="No">
+               <HBox.margin>
+                  <Insets left="12.0" />
+               </HBox.margin>
+            </Button>
          </children>
+         <FlowPane.margin>
+            <Insets top="15.0" />
+         </FlowPane.margin>
+      </HBox>
+      <VBox alignment="CENTER" spacing="20.0">
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>

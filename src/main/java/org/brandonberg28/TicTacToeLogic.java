@@ -1,22 +1,22 @@
 package org.brandonberg28;
 
+
 public class TicTacToeLogic 
 {
 
    private String [][] table = {{"-","-","-"},{"-","-","-"},{"-","-","-"}};
-   private Player player1, player2;   
+   private int turnCounter = 0;   
    
-   public TicTacToeLogic(Player player1, Player player2)
+   public TicTacToeLogic()
    {
-      this.player1 = player1;
-      this.player1 = player2;
+    
    }
    
    public void emptyTable()
    {
-      for (int i=0; i<3; i++)//loop for rows
+      for (int i=0; i<3; i++)
       {
-         for (int j=0; j<3; j++)//loop for collumns
+         for (int j=0; j<3; j++)
          {
             table[i][j] = "-";
          }
@@ -27,26 +27,40 @@ public class TicTacToeLogic
    {
       return table;
    }
-
-   public boolean placeIsNotMarked(String spotMark)
+   
+   public boolean markPosition(Player player, ButtonPosition BP)
    {
-      if(spotMark == "-")
+      if(table[BP.getRow()][BP.getCol()] == "-")
       {
+         table[BP.getRow()][BP.getCol()] = player.getSymbol();
          return true;
       }
-      return false;
+      else
+      {
+         return false;
+      }
    }
-   
-   public void markPlaceOnTable(Player player, int row, int col)
-   {
-      //add range checking ****
-      table[row][col] = player.getSymbol();
+
+   public void addToTurnCounter() {
+      turnCounter++;
+   }
+
+   public int getTurnCounter() {
+      return turnCounter;
+   }
+
+   public void clearTurnCounter() {
+      turnCounter = 0;
+   }
+
+   public Player checkWhoWonMostGames(Player player1, Player player2) {
+      return player1.getTotalWins() > player2.getTotalWins() ? player1 : player2;
    }
    
    public boolean checkIfWinner(Player player) 
    {
       int InARow = 0, InACol = 0;
-      //check for Xs
+      
       for(int i=0; i<3; i++)  
       {
          for(int j=0; j<3; j++)  

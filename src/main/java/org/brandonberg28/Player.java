@@ -4,16 +4,24 @@ public abstract class Player
 {
 
    private String name;
+   private int totalWins = 0;
    
    public Player(String name)
    {
       this.name = name;
    }
    
-   
    public String getName()
    {
       return name;
+   }
+
+   public void addAWin() {
+      totalWins++;
+   }
+
+   public int getTotalWins() {
+      return totalWins;
    }
    
    public abstract String getSymbol();
